@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ADS\JsonImmutableObjects\Polymorphism;
 
 use ADS\JsonImmutableObjects\JsonSchemaAwareRecordLogic;
+use ADS\Util\ArrayUtil;
 use EventEngine\Data\ImmutableRecord;
 use EventEngine\JsonSchema\JsonSchema;
 use EventEngine\JsonSchema\JsonSchemaAwareRecord;
@@ -96,6 +97,8 @@ trait DiscriminatorLogic
     /** @param array<string, mixed> $data */
     private static function propertyValue(array $data): string
     {
+        $data = ArrayUtil::toCamelCasedKeys($data);
+
         if (! isset($data[static::propertyName()])) {
             throw new InvalidArgumentException(
                 sprintf(

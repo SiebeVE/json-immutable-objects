@@ -10,6 +10,9 @@ use ADS\JsonImmutableObjects\Tests\Object\OneOfWithDiscriminatorTwo;
 use ADS\JsonImmutableObjects\Tests\Object\OneOfWithInvalidClass;
 use ADS\JsonImmutableObjects\Tests\Object\OneOfWithInvalidClassType;
 use ADS\JsonImmutableObjects\Tests\Object\TypeVO;
+use ADS\JsonImmutableObjects\Tests\Object\ValueObject\Discriminator\CamelCasedPropertyName\DiscriminatorItemOne;
+// phpcs:ignore Generic.Files.LineLength.TooLong
+use ADS\JsonImmutableObjects\Tests\Object\ValueObject\Discriminator\CamelCasedPropertyName\OneOfWithCamelCasedDiscriminator;
 use EventEngine\JsonSchema\Type\UnionType;
 use PHPUnit\Framework\TestCase;
 
@@ -161,5 +164,18 @@ class PolymorphismTest extends TestCase
                 'other' => 'test2',
             ],
         );
+    }
+
+    public function testDiscriminatorWithCamelCasedPropertyName(): void
+    {
+        $object = OneOfWithCamelCasedDiscriminator::fromArray(
+            [
+                'my_type' => 'one',
+                'other' => 'oh-my',
+            ],
+        );
+
+        $this->assertInstanceOf(OneOfWithCamelCasedDiscriminator::class, $object);
+        $this->assertInstanceOf(DiscriminatorItemOne::class, $object->value());
     }
 }
